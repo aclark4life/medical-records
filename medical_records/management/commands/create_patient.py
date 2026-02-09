@@ -3,7 +3,7 @@ import random
 from django.core.management.base import BaseCommand
 from faker import Faker
 
-from demo.medical_records.models import Patient, PatientRecord, Billing
+from medical_records.models import Patient, PatientRecord, Billing
 
 
 class Command(BaseCommand):
