@@ -25,15 +25,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Patient',
-            fields=[
-                ('id', django_mongodb_backend.fields.ObjectIdAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('patient_name', models.CharField(max_length=255)),
-                ('patient_id', models.BigIntegerField()),
-                ('patient_record', django_mongodb_backend.fields.EmbeddedModelField(embedded_model=medical_records.models.PatientRecord)),
-            ],
-        ),
-        migrations.CreateModel(
             name='PatientRecord',
             fields=[
                 ('id', django_mongodb_backend.fields.ObjectIdAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -44,5 +35,14 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
+        ),
+        migrations.CreateModel(
+            name='Patient',
+            fields=[
+                ('id', django_mongodb_backend.fields.ObjectIdAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('patient_name', models.CharField(max_length=255)),
+                ('patient_id', models.BigIntegerField()),
+                ('patient_record', django_mongodb_backend.fields.EmbeddedModelField(embedded_model=medical_records.models.PatientRecord)),
+            ],
         ),
     ]
