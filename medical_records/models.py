@@ -1,27 +1,4 @@
-from django.db import models
-from django_mongodb_backend.models import EmbeddedModel
-from django_mongodb_backend.fields import (
-    EmbeddedModelField,
-    EncryptedEmbeddedModelField,
-    EncryptedCharField,
-)
+# Moved to medical_records.django.models — kept for backward compatibility.
+from medical_records.django.models import Patient, PatientRecord, Billing
 
-
-class Patient(models.Model):
-    patient_name = models.CharField(max_length=255)
-    patient_id = models.BigIntegerField()
-    patient_record = EmbeddedModelField("PatientRecord")
-
-    def __str__(self):
-        return f"{self.patient_name} ({self.patient_id})"
-
-
-class PatientRecord(EmbeddedModel):
-    ssn = EncryptedCharField(max_length=11)
-    billing = EncryptedEmbeddedModelField("Billing")
-    bill_amount = models.DecimalField(max_digits=10, decimal_places=2)
-
-
-class Billing(EmbeddedModel):
-    cc_type = models.CharField(max_length=50)
-    cc_number = models.CharField(max_length=20)
+__all__ = ["Patient", "PatientRecord", "Billing"]

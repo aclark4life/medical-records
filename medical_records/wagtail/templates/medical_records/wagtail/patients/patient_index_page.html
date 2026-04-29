@@ -1,0 +1,62 @@
+{% extends "medical_records/wagtail/base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+  <div class="container">
+
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span class="breadcrumb__sep">/</span>
+      <span>{{ page.title }}</span>
+    </div>
+
+    <h1 class="section-title">{{ page.title }}</h1>
+
+    {% if page.intro %}
+      <div class="page-intro rich-text">{{ page.intro|richtext }}</div>
+    {% endif %}
+
+    {% if patients %}
+      <div class="patient-grid">
+        {% for patient in patients %}
+          <div class="patient-card">
+            <div class="patient-card__header">
+              <div>
+                <div class="patient-card__avatar" aria-hidden="true">
+                  {{ patient.patient_name|slice:":1"|upper }}
+                </div>
+              </div>
+              <div style="flex:1">
+                <div class="patient-card__name">{{ patient.patient_name }}</div>
+                <div class="patient-card__id">ID: {{ patient.patient_id }}</div>
+              </div>
+              <span class="badge badge--active">Active</span>
+            </div>
+
+            {% if patient.specific.patient_record %}
+              <div class="patient-card__meta">
+                <span>💰 ${{ patient.specific.patient_record.bill_amount }}</span>
+                {% if patient.specific.patient_record.billing %}
+                  <span>💳 {{ patient.specific.patient_record.billing.cc_type }}</span>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            <div class="patient-card__footer">
+              <a href="{% pageurl patient %}" class="btn btn-secondary btn-sm">
+                View Record →
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-state__icon">🏥</div>
+        <p>No patient records yet.</p>
+        <a href="/cms/" class="btn btn-primary mt-2">Add patients via CMS</a>
+      </div>
+    {% endif %}
+
+  </div>
+{% endblock %}
