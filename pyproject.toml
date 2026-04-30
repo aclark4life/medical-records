@@ -18,7 +18,4 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
   "Faker",
-  "wagtail>=6.0",
-  "django-mongodb-backend",
-  "django>=5.0",
 ]

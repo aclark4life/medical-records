@@ -1,2 +1,6 @@
-# Moved to medical_records.medical_records_django.apps — kept for reference only.
-# Install the app as "medical_records.medical_records_django" in INSTALLED_APPS.
+from django.apps import AppConfig
+
+
+class MedicalRecordsConfig(AppConfig):
+    default_auto_field = "django_mongodb_backend.fields.ObjectIdAutoField"
+    name = "medical_records"
