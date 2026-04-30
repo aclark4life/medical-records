@@ -8,7 +8,7 @@ DEBUG = os.getenv("DEBUG", "true").lower() == "true"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1").split()
 
 INSTALLED_APPS = [
-    "medical_records.wagtail.apps.MedicalWagtailConfig",
+    "medical_records.medical_records_wagtail.apps.MedicalWagtailConfig",
     # Wagtail
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -43,7 +43,7 @@ MIDDLEWARE = [
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
-ROOT_URLCONF = "medical_records.wagtail.urls"
+ROOT_URLCONF = "medical_records.medical_records_wagtail.urls"
 
 TEMPLATES = [
     {
@@ -61,7 +61,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "medical_records.wagtail.wsgi.application"
+WSGI_APPLICATION = "medical_records.medical_records_wagtail.wsgi.application"
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]

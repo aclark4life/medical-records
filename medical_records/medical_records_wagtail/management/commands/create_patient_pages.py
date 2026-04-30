@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
 from wagtail.models import Locale, Page
 
-from medical_records.wagtail.models import (
+from medical_records.medical_records_wagtail.models import (
     Billing,
     PatientIndexPage,
     PatientPage,

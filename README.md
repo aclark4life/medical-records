@@ -10,7 +10,7 @@ medical_records/
 └── wagtail/         # Wagtail CMS integration (pages, admin, settings)
 ```
 
-The two sub-apps can be used independently. `medical_records.wagtail` provides the full CMS-driven frontend; `medical_records.django_only` exposes the same models through the standard Django admin.
+The two sub-apps can be used independently. `medical_records.medical_records_wagtail` provides the full CMS-driven frontend; `medical_records.medical_records_django` exposes the same models through the standard Django admin.
 
 ## Requirements
 
@@ -40,7 +40,7 @@ Set the following environment variables before running the app:
 
 Both sub-apps are standard Django apps. Add one (or both) to your project's `INSTALLED_APPS` and run commands with your project's settings module.
 
-**`medical_records.wagtail` — Wagtail CMS app**
+**`medical_records.medical_records_wagtail` — Wagtail CMS app**
 
 Run migrations, set up the page tree, and seed sample data:
 
@@ -52,7 +52,7 @@ django-admin create_patient_pages 20
 django-admin runserver
 ```
 
-**`medical_records.django_only` — Plain Django app**
+**`medical_records.medical_records_django` — Plain Django app**
 
 Seed patient records directly into MongoDB:
 
@@ -84,6 +84,6 @@ PatientPage (Wagtail page)
 
 | Command | App | Description |
 |---|---|---|
-| `setup_wagtail [--force]` | `medical_records.wagtail` | Create root → home → patient index page hierarchy |
-| `create_patient_pages <n> [--flush]` | `medical_records.wagtail` | Generate `n` sample patient pages |
-| `create_patients <n> [--flush] [--mongodb-uri URI]` | `medical_records.django_only` | Generate `n` patient records |
+| `setup_wagtail [--force]` | `medical_records.medical_records_wagtail` | Create root → home → patient index page hierarchy |
+| `create_patient_pages <n> [--flush]` | `medical_records.medical_records_wagtail` | Generate `n` sample patient pages |
+| `create_patients <n> [--flush] [--mongodb-uri URI]` | `medical_records.medical_records_django` | Generate `n` patient records |
