@@ -1,6 +1,8 @@
 import os
 import random
+
 from django.core.management.base import BaseCommand
+
 from faker import Faker
 
 from medical_records.models import Patient, PatientRecord, Billing
@@ -24,6 +26,18 @@ class Command(BaseCommand):
             help="MongoDB connection URI to set as MONGODB_URI env var",
         )
 
+    def _encrypted_collections_exist(self):
+        """Return True if the encrypted database has been migrated."""
+        try:
+            from django.db import connections
+
+            conn = connections["encrypted"]
+            conn.ensure_connection()
+            collection_names = conn.database.list_collection_names()
+            return "medical_records_patient" in collection_names
+        except Exception:
+            return False
+
     def handle(self, *args, **options):
         fake = Faker()
 
@@ -36,25 +50,29 @@ class Command(BaseCommand):
                 self.style.SUCCESS(f"MONGODB_URI set to: {options['mongodb_uri']}")
             )
 
+        if not self._encrypted_collections_exist():
+            self.stderr.write(
+                self.style.ERROR(
+                    "Encrypted collections do not exist. "
+                    "Run 'manage.py migrate --database encrypted' first."
+                )
+            )
+            return
+
         # Optionally flush
         if options["flush"]:
             Patient.objects.all().delete()
             self.stdout.write(self.style.WARNING("Deleted all existing patients."))
 
         for _ in range(num_patients):
-            # Create a Billing object
             billing = Billing(
                 cc_type=fake.credit_card_provider(), cc_number=fake.credit_card_number()
             )
-
-            # Create a PatientRecord object
             record = PatientRecord(
                 ssn=fake.ssn(),
                 billing=billing,
                 bill_amount=round(random.uniform(50.0, 5000.0), 2),
             )
-
-            # Create Patient
             patient = Patient(
                 patient_name=fake.name(),
                 patient_id=random.randint(100000, 999999),
