@@ -38,31 +38,28 @@ Set the following environment variables before running the app:
 
 ## Usage
 
-All commands use `DJANGO_SETTINGS_MODULE=medical_records.wagtail.settings.base`.
+Both sub-apps are standard Django apps. Add one (or both) to your project's `INSTALLED_APPS` and run commands with your project's settings module.
 
-**Run migrations:**
+**`medical_records.wagtail` — Wagtail CMS app**
+
+Run migrations, set up the page tree, and seed sample data:
+
 ```bash
-django-admin migrate --settings=medical_records.wagtail.settings.base
+django-admin migrate
+django-admin createsuperuser
+django-admin setup_wagtail
+django-admin create_patient_pages 20
+django-admin runserver
 ```
 
-**Create a superuser:**
-```bash
-django-admin createsuperuser --settings=medical_records.wagtail.settings.base
-```
+**`medical_records.django` — Plain Django app**
 
-**Set up the Wagtail page tree** (run once after migrate):
-```bash
-django-admin setup_wagtail --settings=medical_records.wagtail.settings.base
-```
+Seed patient records directly into MongoDB:
 
-**Generate sample patient pages:**
 ```bash
-django-admin create_patient_pages 20 --settings=medical_records.wagtail.settings.base
-```
-
-**Start the development server:**
-```bash
-django-admin runserver --settings=medical_records.wagtail.settings.base
+django-admin create_patients 20
+django-admin create_patients 20 --flush
+django-admin create_patients 20 --mongodb-uri mongodb://localhost:27017/mydb
 ```
 
 ## URLs
@@ -85,8 +82,8 @@ PatientPage (Wagtail page)
 
 ## Management commands
 
-| Command | Description |
-|---|---|
-| `setup_wagtail [--force]` | Create root → home → patient index page hierarchy |
-| `create_patient_pages <n> [--flush]` | Generate `n` sample patient pages |
-| `create_patient <n> [--flush] [--mongodb-uri URI]` | Generate `n` records in the base Django app |
+| Command | App | Description |
+|---|---|---|
+| `setup_wagtail [--force]` | `medical_records.wagtail` | Create root → home → patient index page hierarchy |
+| `create_patient_pages <n> [--flush]` | `medical_records.wagtail` | Generate `n` sample patient pages |
+| `create_patients <n> [--flush] [--mongodb-uri URI]` | `medical_records.django` | Generate `n` patient records |
