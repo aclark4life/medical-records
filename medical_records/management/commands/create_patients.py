@@ -26,7 +26,7 @@ class Command(BaseCommand):
             help="MongoDB connection URI to set as MONGODB_URI env var",
         )
         parser.add_argument(
-            "--skip-checks",
+            "--skip-collection-check",
             action="store_true",
             help="Skip checking if the encrypted collection exists before creating patients",
         )
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                 self.style.SUCCESS(f"MONGODB_URI set to: {options['mongodb_uri']}")
             )
 
-        if not options["skip_checks"] and not self._encrypted_collections_exist():
+        if not options["skip_collection_check"] and not self._encrypted_collections_exist():
             self.stderr.write(
                 self.style.ERROR(
                     "Encrypted collections do not exist. "
